@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "timonclient-test",
+  "version": "1.0.0",
+  "name": "Timon Client integration tests",
+  "environment": "client",
+  "entrypoints": {"fabric-client-gametest": ["nl.timon.liteclient.ClientSmokeTest"]}
+}

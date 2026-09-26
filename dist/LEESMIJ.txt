@@ -1,0 +1,18 @@
+TIMON CLIENT 1.0.0
+
+Kies precies EEN jar voor de Minecraft Java-versie van jouw profiel:
+  26.2: timon-client-1.0.0+mc26.2.jar
+  26.3: timon-client-1.0.0+mc26.3.jar
+
+Zet deze in de mods-map van een Fabric-profiel (Loader 0.19.5+ / Java 25).
+Voeg Fabric API 0.161.0 voor dezelfde Minecraft-versie toe.
+Gebruik deze eerste versie zonder Meteor, Sodium of Iris.
+De volledige installatiehandleiding staat in README.md in de projectmap.
+
+RECHTER SHIFT: menu openen
+F8: alle modules uit
+ESCAPE: menu sluiten
+
+Alles begint uit. Je instellingen worden opgeslagen, actieve modules niet.
+Modules worden ook uitgezet bij disconnect en overlijden.
+Geen OP nodig; serverinstellingen en controles blijven bepalend.
