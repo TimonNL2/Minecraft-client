@@ -12,3 +12,4 @@ dist/*.zip
 verification/**/*.log
 verification/*console*.txt
 verification/*threads*.txt
+verification/sodium-fix/

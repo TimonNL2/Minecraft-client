@@ -20,6 +20,7 @@ import meteordevelopment.meteorclient.timon.ClientFeatures;
 import meteordevelopment.meteorclient.utils.misc.input.KeyBinds;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.players.NameAndId;
@@ -33,6 +34,9 @@ import net.minecraft.world.level.block.Blocks;
 public final class ClientSmokeTest implements FabricClientGameTest {
     @Override public void runTest(ClientGameTestContext context) {
         context.runOnClient(mc -> {
+            boolean expectSodium = "sodium".equals(System.getProperty("timon.test.renderer", "vanilla"));
+            check(FabricLoader.getInstance().isModLoaded("sodium") == expectSodium, "Test renderer was not loaded as requested");
+            MeteorClient.LOG.info("Testing renderer: {}", expectSodium ? "Sodium" : "vanilla/Indigo");
             check(MeteorClient.INSTANCE != null, "Entrypoint did not run");
             check(MeteorClient.FOLDER.getName().equals("timon-client"), "Config would overwrite Meteor's folder");
             Modules.get().disableAll();
@@ -46,6 +50,9 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             for (var module : Modules.get().getAll()) module.settings.reset();
             check(Modules.get().get(ElytraFly.class).settings.get("auto-pilot") != null, "Elytra options missing");
         });
+        context.setScreen(TitleScreen::new);
+        context.waitTicks(10);
+        context.takeScreenshot("vesper-title-screen");
         context.runOnClient(mc -> Tabs.get().getFirst().openScreen(GuiThemes.get()));
         context.waitTicks(5);
         context.takeScreenshot("timon-meteor-menu");
@@ -115,6 +122,12 @@ public final class ClientSmokeTest implements FabricClientGameTest {
 
             world.getServer().runCommand("fill -2 -60 3 2 -57 7 minecraft:stone");
             world.getServer().runCommand("setblock 0 -59 5 minecraft:diamond_ore");
+            // Enclosed water and lava exercise Sodium's fluid occlusion hooks,
+            // including the path that previously crashed as soon as a world loaded.
+            world.getServer().runCommand("fill 3 -60 3 5 -57 7 minecraft:stone");
+            world.getServer().runCommand("setblock 4 -59 5 minecraft:water");
+            world.getServer().runCommand("fill -5 -60 3 -3 -57 7 minecraft:stone");
+            world.getServer().runCommand("setblock -4 -59 5 minecraft:lava");
             context.getInput().lookAt(0, 0);
             world.getConnection().waitForClientboundPackets();
             world.getConnection().waitForChunksRender();
@@ -137,6 +150,19 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             world.getConnection().waitForChunksRender();
             context.waitTicks(5);
             context.takeScreenshot("timon-xray-partial-opacity");
+            for (Xray.FluidOpacity fluidMode : Xray.FluidOpacity.values()) {
+                context.runOnClient(mc -> {
+                    Xray xray = Modules.get().get(Xray.class);
+                    xray.settings.get("fluid-opacity", Xray.FluidOpacity.class).set(fluidMode);
+                    int waterAlpha = fluidMode == Xray.FluidOpacity.Water || fluidMode == Xray.FluidOpacity.Both ? 80 : -1;
+                    int lavaAlpha = fluidMode == Xray.FluidOpacity.Lava || fluidMode == Xray.FluidOpacity.Both ? 80 : -1;
+                    check(Xray.getFluidAlpha(Blocks.WATER.defaultBlockState().getFluidState(), null) == waterAlpha, "Water opacity mismatch: " + fluidMode);
+                    check(Xray.getFluidAlpha(Blocks.LAVA.defaultBlockState().getFluidState(), null) == lavaAlpha, "Lava opacity mismatch: " + fluidMode);
+                });
+                world.getConnection().waitForChunksRender();
+                context.waitTicks(5);
+                context.takeScreenshot("timon-xray-fluid-" + fluidMode.name().toLowerCase(java.util.Locale.ROOT));
+            }
             context.runOnClient(mc -> {
                 Xray xray = Modules.get().get(Xray.class);
                 xray.listMode.set(Xray.ListMode.Blacklist);
@@ -184,7 +210,7 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             context.waitTicks(2);
             context.runOnClient(mc -> {
                 check(Modules.get().getActive().isEmpty(), "F8 did not disable all modules");
-                MeteorClient.LOG.info("All Timon module assertions passed without OP; closing disposable world.");
+                MeteorClient.LOG.info("All Vesper module assertions passed without OP; closing disposable world.");
             });
         }
         context.waitForScreen(TitleScreen.class);

@@ -175,7 +175,7 @@ public abstract class MinecraftMixin implements IMinecraft {
 
     @ModifyArg(method = "updateTitle", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;setTitle(Ljava/lang/String;)V"))
     private String setTitle(String original) {
-        if (Config.get() == null || !Config.get().customWindowTitle.get()) return original;
+        if (((Minecraft) (Object) this).level == null || Config.get() == null || !Config.get().customWindowTitle.get()) return original;
 
         String customTitle = Config.get().customWindowTitleText.get();
         Script script = MeteorStarscript.compile(customTitle);

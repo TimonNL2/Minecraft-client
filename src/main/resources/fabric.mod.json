@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "name": "Timon Client",
+  "name": "Vesper Client",
   "id": "meteor-client",
   "version": "${version}",
   "description": "Nine-module client for Minecraft 26.2/26.3. Independent Meteor-based GPL distribution.",
   "authors": [
-    "TimonNL2 (Timon distribution)",
+    "TimonNL2 (Vesper distribution)",
     "MineGame159",
     "squidoodly",
     "seasnail"

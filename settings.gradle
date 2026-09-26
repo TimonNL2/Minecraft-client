@@ -5,4 +5,4 @@ pluginManagement {
         mavenCentral()
     }
 }
-rootProject.name = 'timon-client'
+rootProject.name = 'vesper-client'

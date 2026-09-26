@@ -7,6 +7,9 @@ group = project.maven_group
 base { archivesName = project.archives_base_name }
 layout.buildDirectory = file("build/${project.minecraft_version}")
 if (!(project.minecraft_version in ['26.2', '26.3'])) throw new GradleException('Supported Minecraft versions: 26.2 and 26.3')
+def sodiumVersion = project.minecraft_version == '26.3' ? 'mc26.3-0.9.3-alpha.1-fabric' : 'mc26.2-0.9.1-fabric'
+def testRenderer = providers.gradleProperty('test_renderer').getOrElse('vanilla')
+if (!(testRenderer in ['vanilla', 'sodium'])) throw new GradleException('Supported test renderers: vanilla and sodium')
 
 repositories {
     mavenCentral()
@@ -25,7 +28,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}+${project.minecraft_version}"
-    compileOnly('maven.modrinth:sodium:mc26.2-0.9.1-fabric') { transitive = false }
+    compileOnly("maven.modrinth:sodium:$sodiumVersion") { transitive = false }
     compileOnly('maven.modrinth:lithium:mc26.2-0.25.2-fabric') { transitive = false }
     compileOnly('maven.modrinth:iris:1.11.2+26.2-fabric') { transitive = false }
     compileOnly('maven.modrinth:modmenu:20.0.1') { transitive = false }
@@ -98,6 +101,14 @@ fabricApi {
         enableGameTests = false
         enableClientGameTests = true
     }
+}
+if (testRenderer == 'sodium') {
+    dependencies {
+        gametestRuntimeOnly("maven.modrinth:sodium:${providers.gradleProperty('test_sodium_version').getOrElse(sodiumVersion)}") { transitive = false }
+    }
+}
+tasks.named('runClientGameTest') {
+    systemProperty 'timon.test.renderer', testRenderer
 }
 jar {
     from('LICENSE', 'NOTICE.md')

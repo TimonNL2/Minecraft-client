@@ -1,93 +1,95 @@
-# Timon Client
+# Vesper Client
 
 [![Build](https://github.com/TimonNL2/Minecraft-client/actions/workflows/build.yml/badge.svg)](https://github.com/TimonNL2/Minecraft-client/actions/workflows/build.yml)
 [![Downloads](https://img.shields.io/github/v/release/TimonNL2/Minecraft-client)](https://github.com/TimonNL2/Minecraft-client/releases)
 
-Een zelfstandige Fabric-client voor **Minecraft Java 26.2 en 26.3**, met de oorspronkelijke Meteor-interface en alleen deze negen beschikbare modules:
+A standalone Fabric client for **Minecraft Java 26.2 and 26.3**, with Meteor's original interface and nine available modules:
 
 **Flight · Elytra Fly · Fast Use · Auto Clicker · Xray · Auto Eat · Anti Hunger · No Fall · Air Place**
 
-**[Download](https://github.com/TimonNL2/Minecraft-client/releases/latest)** · **[Installeren en gebruiken](docs/INSTALLEREN.md)** · **[Alle builds](https://github.com/TimonNL2/Minecraft-client/releases)** · **[Wijzigingen](CHANGELOG.md)**
+**[Download](https://github.com/TimonNL2/Minecraft-client/releases/latest)** · **[Installation](docs/INSTALLATION.md)** · **[All builds](https://github.com/TimonNL2/Minecraft-client/releases)** · **[Changelog](CHANGELOG.md)**
 
-Timon Client 2 is een aangepaste [Meteor Client](https://github.com/MeteorDevelopment/meteor-client)-distributie onder GPL-3.0. Hij bevat Meteor zelf; je installeert dus geen afzonderlijke Meteor-jar. Zie [credits en herkomst](NOTICE.md).
+Vesper is a modified [Meteor Client](https://github.com/MeteorDevelopment/meteor-client) distribution under GPL-3.0. Meteor is included: do not install a separate Meteor jar. See [attribution and source](NOTICE.md).
 
-![Het menu met de negen modules](docs/images/menu.png)
+![The nine-module interface](docs/images/menu.png)
 
-## Download kiezen
+## Choose your download
 
-| Je Minecraft-versie | Kies | Vereist |
+| Minecraft | Download | Requirements |
 |---|---|---|
-| 26.2 | jar met `mc26.2` in de naam | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
-| 26.3 | jar met `mc26.3` in de naam | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
+| 26.2 | `vesper-client-2.0.1-mc26.2.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
+| 26.3 | `vesper-client-2.0.1-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
 
-Download de **normale jar**, niet de `-sources.jar`. Zet alleen de passende versie in je mods-map. Verwijder Meteor en oudere Timon-jars uit hetzelfde profiel. Uitgebreide stappen staan in [INSTALLEREN.md](docs/INSTALLEREN.md).
+Download the **normal jar**, not `-sources.jar`. Use only the version matching your Minecraft profile. Remove older Timon/Vesper jars and the regular Meteor jar. Follow the [installation guide](docs/INSTALLATION.md).
 
-**Rechter Shift** opent het menu. Links klikken schakelt een module om, rechts klikken opent de instellingen. **F8** zet alles uit. Vensters, kleuren, lettertype, schaal, zoeken, favorieten, profielen en de sneltoetseditor komen uit Meteor.
+**Right Shift** opens the menu. Left-click a module to toggle it; right-click to open its settings. **F8** disables all modules. Draggable windows, colors, fonts, scale, search, favorites, profiles and keybind editing use Meteor's original interface.
 
-## Modules en opties
+Vesper adds no client credit overlay, promotional splash text or client links to Minecraft's main menu. Extra account/proxy controls are also removed from the multiplayer menu. Credits remain in the mod metadata, license and source notices.
 
-| Module | Beschikbare instellingen |
+## Modules and settings
+
+| Module | Available settings |
 |---|---|
-| Flight | Abilities/Velocity, snelheid, verticale snelheid, No Sneak, anti-kick None/Normal/Packet, interval en duur. |
-| Elytra Fly | Vanilla/Packet/Pitch40/Bounce, horizontale/verticale snelheid, automatisch opstijgen, versnelling, auto-hover, water-/chunk-/botsingscontroles, pitch/yaw, elytra wisselen, vuurwerk aanvullen en autopilot. |
-| Fast Use | All/Some, itemlijst, blokkenfilter en cooldown in ticks. |
-| Auto Clicker | Links en rechts afzonderlijk Disabled/Hold/Press, afzonderlijke vertragingen en klikken in schermen. |
-| Xray | **Whitelist of blacklist**, aparte bewaarde bloklijsten, opacity 0–255, vloeistofkeuze en Exposed Only. |
-| Auto Eat | Voedselblacklist, volledige inventaris doorzoeken, voedselprioriteit, gezondheid-/hongerdrempels en combinatiemodi. De oorspronkelijke pauzeopties zijn behouden. |
-| Anti Hunger | Sprintpakket- en on-ground-opties afzonderlijk instelbaar. |
-| No Fall | Packet/Place/AirPlace, keuze plaatsingsitem, plaatsingsmoment, centreren, Anti Bounce en pauzeren met een mace. |
-| Air Place | Normaal/aangepast bereik, plaatsingsvoorbeeld, Shape Mode en kleuren voor vlakken en lijnen. |
+| Flight | Abilities/Velocity, movement and vertical speed, No Sneak, anti-kick None/Normal/Packet, interval and duration. |
+| Elytra Fly | Vanilla/Packet/Pitch40/Bounce, movement and vertical speed, automatic takeoff, acceleration, auto-hover, water/chunk/collision checks, pitch/yaw, elytra swapping, firework replenishment and autopilot. |
+| Fast Use | All/Some, item list, block filter and cooldown in ticks. |
+| Auto Clicker | Separate left/right Disabled/Hold/Press modes, delays and clicking in screens. |
+| Xray | **Whitelist or blacklist**, separately saved block lists, opacity 0–255, fluid selection and Exposed Only. |
+| Auto Eat | Food blacklist, inventory search, food priority, health/hunger thresholds and combinations. Original pause options are retained. |
+| Anti Hunger | Separate sprint-packet and on-ground settings. |
+| No Fall | Packet/Place/AirPlace, placement item, timing, centering, Anti Bounce and mace pause. |
+| Air Place | Normal/custom range, placement preview, Shape Mode and line/face colors. |
 
-De modulecode en de bijbehorende instellingen komen uit de vastgelegde Meteor-versies; de extra Xray-listmodus is voor Timon toegevoegd. Dit is geen belofte van identiek gedrag aan iedere toekomstige Meteor-versie. Opties voor optionele externe mods doen alleen iets als die mods aanwezig zijn.
+The module code and settings come from the pinned Meteor versions in [NOTICE.md](NOTICE.md). Behavior may differ from future Meteor versions. Options referring to optional external mods require those mods.
 
-Bij **Xray → List Mode → Whitelist** blijven geselecteerde blokken zichtbaar. Bij **Blacklist** worden juist de geselecteerde blokken transparant. De schuif **Opacity** bepaalt hoeveel je nog ziet van de overige/uitgesloten blokken. De blokselector ondersteunt zoeken op naam en blok-ID.
+Under **Xray → List Mode → Whitelist**, selected blocks remain visible. Under **Blacklist**, selected blocks receive the configured opacity. **Opacity** controls how visible hidden/excluded blocks remain. The block selector supports searching by name and ID.
 
-![Xray-instellingen](docs/images/xray-settings.png)
+![Xray settings](docs/images/xray-settings.png)
 
-## Survival
+## Survival and compatibility
 
-De mod gebruikt geen OP-commando's en vraagt geen serverpermissies aan. Je hebt wel echte items nodig voor eten, elytra-vlucht en blokplaatsing. De server kan beweging, schade, honger en plaatsing controleren; vooral Flight, No Fall, Anti Hunger en Air Place blijven serverafhankelijk. Server Anti-Xray kan ertsen verbergen die de client niet ontvangt. Fast Use verkort geen door de server bepaalde eetduur of cooldowns.
+The client uses no OP commands and requires no server permissions. Eating, elytra flight and block placement require real inventory items. Servers can validate movement, damage, hunger and placement; Flight, No Fall, Anti Hunger and Air Place remain server-dependent. Server Anti-Xray can hide block information the client never receives. Fast Use does not shorten server-controlled eating times or cooldowns.
 
-De automatische speltest gebruikt een tijdelijke vanilla-survivalwereld. Hij controleert de interface, modulelijst, instellingen bewaren, Xray-rendering en daadwerkelijke beweging/plaatsing/eten/valschade. Extra renderers en alle combinaties van instellingen zijn niet volledig getest. Zie [testresultaten](verification/RESULTATEN.md).
+**2.0.1 fixes the world-join crash with Sodium 0.9.3-alpha.1 on Minecraft 26.3.** The fluid hook uses a method shared with Sodium 0.9.1 and 0.9.2. Automated tests cover vanilla/Indigo and the pinned Sodium version for each target. See [test scope and results](verification/TESTING.md) for exact combinations and limitations.
 
-## Iedere build op GitHub
+## Every build on GitHub
 
-- Een push naar **main** bouwt beide Minecraft-versies en draait de clienttests. Bij succes verschijnt een eigen **ontwikkelrelease** `build-<nummer>` met beide jars, passende sources-jars, volledige broncode, uitleg en SHA-256-controlesommen.
-- Een tag **`v2.0.0`** (of een volgend versienummer) publiceert een gewone release. De tag moet overeenkomen met `mod_version` in `gradle.properties`.
-- Pull requests worden gebouwd en getest; hun resultaten staan bij **Actions → Artifacts**. Mislukte builds worden niet als downloadrelease gepubliceerd.
-- Jars en testresultaten zijn ook Actions-artifacts (respectievelijk 90 en 30 dagen). Gepubliceerde Releases blijven beschikbaar totdat je ze zelf verwijdert. Een lokale build wordt pas gepubliceerd wanneer de bijbehorende broncode naar GitHub wordt gepusht.
+- A push to **main** builds both Minecraft versions and runs client tests with **vanilla and Sodium**. After all checks pass, a separate **development release** `build-<number>` includes both jars, matching source jars, complete buildable source, instructions and SHA-256 checksums.
+- A **`v2.0.1`** tag, or a later version tag, publishes a regular release. It must match `mod_version` in `gradle.properties`.
+- Pull requests are built and tested; downloads are under **Actions → Artifacts**. Failed builds are not published as releases.
+- Jar artifacts are retained for 90 days and test artifacts for 30 days. Published releases remain available until removed. Local builds are published after their source is pushed to GitHub.
 
-Je kunt de workflow ook starten via **Actions → Build and publish client → Run workflow**. Er is geen persoonlijke token als repository-secret nodig; publiceren gebruikt GitHub's tijdelijke `GITHUB_TOKEN`.
+Manual builds: **Actions → Build and publish client → Run workflow**. Publishing uses GitHub's temporary `GITHUB_TOKEN`; no personal token needs to be stored as a repository secret.
 
-## Zelf bouwen
+## Build from source
 
-Installeer **JDK 25** en stel `JAVA_HOME` daarop in. Gradle 9.6.0 wordt met een vastgelegde checksum door de wrapper opgehaald.
+Install **JDK 25** and set `JAVA_HOME`. The wrapper downloads Gradle 9.6.0 and verifies its pinned checksum.
 
 ```powershell
-# Windows: beide versies
+# Windows: both versions
 .\build-all.ps1
-# Inclusief echte Minecraft-clienttests
+# Include client tests with vanilla and Sodium
 .\build-all.ps1 -GameTests
-# Eén versie
+# One version
 .\gradlew.bat -Pminecraft_version=26.3 collectRelease
 ```
 
 ```sh
-# Linux/macOS: één versie
+# Linux/macOS
 ./gradlew -Pminecraft_version=26.2 collectRelease
-# Linux zonder beeldscherm, met Xvfb en Mesa geïnstalleerd
-xvfb-run -a ./gradlew -Pminecraft_version=26.3 runClientGameTest
+# Linux without a display, with Xvfb and Mesa installed
+xvfb-run -a ./gradlew -Pminecraft_version=26.3 -Ptest_renderer=sodium runClientGameTest
 ```
 
-Jars verschijnen in `dist/`. Tests gebruiken `build/run/clientGameTest`, geen bestaande Minecraft-wereld of launcherprofiel.
+Jars are written to `dist/`. Tests use `build/run/clientGameTest`, separate from launcher profiles and saved worlds. `test_renderer` accepts `vanilla` (default) or `sodium`. Sodium is not bundled with Vesper.
 
-## Projectstructuur
+## Project layout
 
-- `src/main`: gemeenschappelijke Meteor-bron met Timon-aanpassingen.
-- `src/mc26.3`: alleen afwijkende bestanden voor 26.3; deze vervangen hun 26.2-equivalent tijdens bouwen.
-- `src/gametest`: integratietest en afgeschermde testhulpmiddelen; deze komen **niet** in de mod-jar.
-- `gradle/`, `gradlew`, `gradlew.bat`: de Gradle-wrapper.
-- `.github/workflows/build.yml`: bouwen, testen en releases publiceren.
-- `docs/`, `CHANGELOG.md`, `NOTICE.md`, `LICENSE`, `licenses/`: uitleg, wijzigingen en licenties.
+- `src/main`: shared Meteor source with Vesper changes.
+- `src/mc26.3`: changed files for 26.3, replacing their common counterparts during building.
+- `src/gametest`: integration tests and isolated helpers; excluded from the mod jar.
+- `gradle/`, `gradlew`, `gradlew.bat`: Gradle wrapper.
+- `.github/workflows/build.yml`: builds, tests and release publishing.
+- `docs/`, `CHANGELOG.md`, `NOTICE.md`, `LICENSE`, `licenses/`: instructions, history and attribution.
 
-Intern blijven ondersteunende Meteor-klassen aanwezig om gedeelde rendering- en bewegingshooks intact te houden. Alleen de negen genoemde modules zijn zichtbaar, worden opgeslagen en kunnen geactiveerd worden. Configuratie staat apart in de map `timon-client` van je Minecraft-profiel. De eerdere eigen implementatie blijft op tag **v1.0.0** beschikbaar.
+Supporting Meteor classes remain internally for shared rendering and movement hooks. Only the nine listed modules are visible, saved and allowed to activate. The configuration directory retains its original name, `timon-client`, to preserve 2.0.0 settings. Vesper was previously named Timon Client; the independent first implementation remains at **v1.0.0**.

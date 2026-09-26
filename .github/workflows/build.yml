@@ -12,13 +12,14 @@ permissions:
 
 jobs:
   build:
-    name: Minecraft ${{ matrix.minecraft }}
+    name: Minecraft ${{ matrix.minecraft }} (${{ matrix.renderer }})
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
         minecraft: ['26.2', '26.3']
+        renderer: ['vanilla', 'sodium']
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -31,11 +32,14 @@ jobs:
           java-version: '25'
           cache: gradle
       - name: Install graphics test dependencies
-        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri libopenal1 libxkbcommon0
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri libegl1 libegl-mesa0 libopenal1 libxkbcommon0
       - name: Build and run survival client tests
         env:
           MC_VERSION: ${{ matrix.minecraft }}
+          TEST_RENDERER: ${{ matrix.renderer }}
           LIBGL_ALWAYS_SOFTWARE: '1'
+          # SDL3 in Minecraft 26.3 needs EGL on the headless Mesa runner.
+          SDL_VIDEO_FORCE_EGL: '1'
           ALSOFT_DRIVERS: 'null'
         shell: bash
         run: |
@@ -48,10 +52,11 @@ jobs:
           fi
           chmod +x gradlew
           xvfb-run -a -s '-screen 0 1280x720x24' ./gradlew --no-daemon --console=plain \
-            "-Pminecraft_version=$MC_VERSION" "-Pmod_version=$version" \
+            "-Pminecraft_version=$MC_VERSION" "-Pmod_version=$version" "-Ptest_renderer=$TEST_RENDERER" \
             "-Pbuild_number=$GITHUB_RUN_NUMBER" "-Pcommit=$GITHUB_SHA" \
             runClientGameTest collectRelease
       - name: Save jars and matching sources
+        if: matrix.renderer == 'vanilla'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: client-mc${{ matrix.minecraft }}
@@ -62,7 +67,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: tests-mc${{ matrix.minecraft }}
+          name: tests-mc${{ matrix.minecraft }}-${{ matrix.renderer }}
           path: |
             build/run/clientGameTest/screenshots/**
             build/run/clientGameTest/logs/latest.log
@@ -94,8 +99,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git archive --format=zip --prefix=timon-client/ -o release-assets/timon-client-complete-source.zip HEAD
-          cp docs/INSTALLEREN.md release-assets/INSTALLEREN.md
+          git archive --format=zip --prefix=vesper-client/ -o release-assets/vesper-client-complete-source.zip HEAD
+          cp docs/INSTALLATION.md release-assets/INSTALLATION.md
           cp LICENSE release-assets/LICENSE.txt
           cp NOTICE.md release-assets/NOTICE.md
           (cd release-assets && sha256sum *.jar *.zip > SHA256SUMS.txt)
@@ -108,19 +113,19 @@ jobs:
           set -euo pipefail
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             tag="$GITHUB_REF_NAME"
-            title="Timon Client $tag — Minecraft 26.2 en 26.3"
+            title="Vesper Client $tag — Minecraft 26.2 and 26.3"
             release_flags=(--latest)
           else
             tag="build-$GITHUB_RUN_NUMBER"
-            title="Ontwikkelbuild $GITHUB_RUN_NUMBER — Minecraft 26.2 en 26.3"
+            title="Development build $GITHUB_RUN_NUMBER — Minecraft 26.2 and 26.3"
             release_flags=(--prerelease --latest=false)
           fi
           {
-            printf 'Twee aparte Fabric-clientmods: kies de jar voor jouw Minecraft-versie.\n\n'
-            printf 'Vereist Java 25, Fabric Loader 0.19.5+ en Fabric API 0.161.0 voor dezelfde Minecraft-versie.\n\n'
-            printf '**Installeren:** download de normale jar; een bestand met `-sources` is alleen broncode. Verwijder Meteor uit hetzelfde profiel. Rechter Shift opent het menu; F8 zet alle modules uit.\n\n'
-            printf 'Beide builds zijn gecompileerd en met de geautomatiseerde survival-clienttest gecontroleerd. Dit garandeert geen werking op iedere server of met anticheat.\n\n'
-            printf 'Broncommit: `%s`. [Wijzigingen](https://github.com/%s/blob/%s/CHANGELOG.md) · [Handleiding](https://github.com/%s/blob/%s/docs/INSTALLEREN.md).\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_SHA"
+            printf 'Two separate Fabric client mods: choose the jar matching your Minecraft version.\n\n'
+            printf 'Requires Java 25, Fabric Loader 0.19.5+ and Fabric API 0.161.0 for the same Minecraft version.\n\n'
+            printf '**Installation:** download the normal jar; files ending in `-sources` contain source code. Remove Meteor and older Timon/Vesper jars from that profile. Right Shift opens the menu; F8 disables every module.\n\n'
+            printf 'Both versions passed automated survival client tests with the vanilla renderer and Sodium. Server checks and anticheat may still reject client actions.\n\n'
+            printf 'Source commit: `%s`. [Changelog](https://github.com/%s/blob/%s/CHANGELOG.md) · [Installation guide](https://github.com/%s/blob/%s/docs/INSTALLATION.md).\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_SHA"
           } > release-notes.md
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" release-assets/* --clobber

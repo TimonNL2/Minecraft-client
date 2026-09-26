@@ -57,20 +57,6 @@ public class Config extends System<Config> {
         .build()
     );
 
-    public final Setting<Boolean> titleScreenCredits = sgVisual.add(new BoolSetting.Builder()
-        .name("title-screen-credits")
-        .description("Show Meteor credits on title screen")
-        .defaultValue(true)
-        .build()
-    );
-
-    public final Setting<Boolean> titleScreenSplashes = sgVisual.add(new BoolSetting.Builder()
-        .name("title-screen-splashes")
-        .description("Show Meteor splash texts on title screen")
-        .defaultValue(true)
-        .build()
-    );
-
     public final Setting<Boolean> customWindowTitle = sgVisual.add(new BoolSetting.Builder()
         .name("custom-window-title")
         .description("Show custom text in the window title.")
@@ -100,34 +86,6 @@ public class Config extends System<Config> {
         .name("sync-list-setting-widths")
         .description("Prevents the list setting screens from moving around as you add & remove elements.")
         .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<ButtonPosition> accountButtonAnchor = sgVisual.add(new EnumSetting.Builder<ButtonPosition>()
-        .name("accounts-button")
-        .description("Controls the position and visibility of the accounts button in the multiplayer screen.")
-        .defaultValue(ButtonPosition.TopRight)
-        .build()
-    );
-
-    public final Setting<Boolean> showAccountStatus = sgVisual.add(new BoolSetting.Builder()
-        .name("account-status")
-        .description("Shows information about the current account in the multiplayer screen.")
-        .defaultValue(true)
-        .build()
-    );
-
-    public final Setting<ButtonPosition> proxiesButtonAnchor = sgVisual.add(new EnumSetting.Builder<ButtonPosition>()
-        .name("proxies-button")
-        .description("Controls the position and visibility of the proxies button in the multiplayer screen.")
-        .defaultValue(ButtonPosition.TopRight)
-        .build()
-    );
-
-    public final Setting<Boolean> showProxiesStatus = sgVisual.add(new BoolSetting.Builder()
-        .name("proxy-status")
-        .description("Shows information about the current proxy in the multiplayer screen.")
-        .defaultValue(true)
         .build()
     );
 
@@ -235,11 +193,4 @@ public class Config extends System<Config> {
         return list;
     }
 
-    public enum ButtonPosition {
-        TopLeft,
-        TopRight,
-        BottomLeft,
-        BottomRight,
-        Hidden,
-    }
 }
