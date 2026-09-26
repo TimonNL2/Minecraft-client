@@ -1,63 +1,93 @@
 # Timon Client
 
-Zelfstandige Fabric-clientmod met alleen Flight, Elytra Fly, Fast Use, Autoclicker, Xray, Auto Eat, Anti Hunger, No Fall en Air Place. Eigen implementatie, zonder Meteor-afhankelijkheid of overgenomen Meteor-code. Minecraft **Java Edition 26.2 en 26.3**, met een apart jar-bestand per versie.
+[![Build](https://github.com/TimonNL2/Minecraft-client/actions/workflows/build.yml/badge.svg)](https://github.com/TimonNL2/Minecraft-client/actions/workflows/build.yml)
+[![Downloads](https://img.shields.io/github/v/release/TimonNL2/Minecraft-client)](https://github.com/TimonNL2/Minecraft-client/releases)
 
-## Installeren
+Een zelfstandige Fabric-client voor **Minecraft Java 26.2 en 26.3**, met de oorspronkelijke Meteor-interface en alleen deze negen beschikbare modules:
 
-1. Maak in je launcher een Fabric-profiel voor **26.2** of **26.3** met **Fabric Loader 0.19.5 of nieuwer**. Beide Minecraft-versies gebruiken Java 25. [Fabric installeren](https://fabricmc.net/use/installer/).
-2. Zet uit `dist` **alleen de Timon Client-jar voor jouw Minecraft-versie** in de `mods`-map van dat profiel.
-3. Voeg **Fabric API 0.161.0 voor dezelfde Minecraft-versie** toe. Officiële downloads: [26.2](https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/0.161.0+26.2/fabric-api-0.161.0+26.2.jar) / [26.3](https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/0.161.0+26.3/fabric-api-0.161.0+26.3.jar).
-4. Start dit profiel. Gebruik voor deze eerste versie een profiel zonder Meteor, Sodium en Iris. Xray gebruikt de standaard Minecraft-renderer en kan niet worden ingeschakeld als Sodium/Iris geladen is.
+**Flight · Elytra Fly · Fast Use · Auto Clicker · Xray · Auto Eat · Anti Hunger · No Fall · Air Place**
 
-De mod wordt alleen op jouw client geïnstalleerd. Je hebt geen OP-rechten nodig. Hij vraagt geen servercommando's aan en wijzigt geen serverinstellingen.
+**[Download](https://github.com/TimonNL2/Minecraft-client/releases/latest)** · **[Installeren en gebruiken](docs/INSTALLEREN.md)** · **[Alle builds](https://github.com/TimonNL2/Minecraft-client/releases)** · **[Wijzigingen](CHANGELOG.md)**
 
-## Bediening
+Timon Client 2 is een aangepaste [Meteor Client](https://github.com/MeteorDevelopment/meteor-client)-distributie onder GPL-3.0. Hij bevat Meteor zelf; je installeert dus geen afzonderlijke Meteor-jar. Zie [credits en herkomst](NOTICE.md).
 
-- **Rechter Shift**: opent het menu in de wereld. **Escape** of **Klaar** sluit het.
-- **F8**: zet alle modules direct uit.
-- Klik bij **Modules** op een knop om die module aan of uit te zetten. Houd de muis op een knop voor uitleg.
-- Bij **Instellingen** klik je om door waarden te bladeren. Op een klein scherm gebruik je Vorige/Volgende.
-- Je kunt de twee sneltoetsen wijzigen bij Minecraft → Opties → Besturing → Toetsen → Timon Client.
+![Het menu met de negen modules](docs/images/menu.png)
 
-Instellingen worden opgeslagen in `config/timonclient.json`. Modules starten uit en worden uitgeschakeld bij uitloggen, overlijden of een nieuwe spelerinstantie. Automatische klik- en eetacties stoppen in menu's en wanneer Minecraft niet actief is. Flight blijft in een menu zweven; bewegingstoetsen worden daar niet gebruikt. Flight en Elytra Fly zijn wederzijds exclusief.
+## Download kiezen
 
-## Wat iedere module doet
-
-| Module | Gebruik | Grenzen |
+| Je Minecraft-versie | Kies | Vereist |
 |---|---|---|
-| Flight | WASD, springen omhoog, sluipen omlaag. Instelbare snelheid en kleine periodieke daling. | Servercorrecties, bewegingscontroles en de standaard vliegende-spelerkick kunnen blijven optreden. |
-| Elytra Fly | Trek een bruikbare elytra aan, begin normaal te zweven en bestuur met WASD/jump/sneak. | Verbruikt normale elytra-duurzaamheid; snelheid en vlucht zijn serverafhankelijk. |
-| Fast Use | Houd gebruiken ingedrukt; kies 0–4 ticks vertraging. | Verkort de clientpauze tussen gebruikspogingen, niet de duur van eten, boogladen of servercooldowns. |
-| Autoclicker | 1–20 CPS, aanvallen of gebruiken. Standaard moet je de bijbehorende knop vasthouden. | Aanvalscooldown en mining-snelheid blijven gelden. Pauzeert tijdens gebruik van een item en Auto Eat. |
-| Xray | Verbergt gewone blokken en vloeistof; toont ertsen, ancient debris en raw iron/copper/gold blocks op volle helderheid. | Alleen de standaard renderer. Kan door de server verborgen/vervangen ertsen niet terughalen. Block entities en entities blijven zichtbaar. |
-| Auto Eat | Eten uit hotbar of offhand bij de ingestelde voedselwaarde; herstelt de vorige hotbarselectie. | Heeft echt voedsel nodig. Slaat golden apples, enchanted golden apples, chorus fruit en een aantal schadelijke/onvoorspelbare etenswaren over. |
-| Anti Hunger | Vermindert bepaalde bewegingsuitputting via sprint- en bewegingsberichten. | Voorkomt geen honger door alle oorzaken. Werkt niet bij elke serverimplementatie. |
-| No Fall | Past de grondstatus in uitgaande bewegingsberichten aan tijdens een val. | Serverafhankelijk; geen gegarandeerde valbescherming. Slaat elytra, vloeistof, voertuigen en mace in de hoofdhand over. |
-| Air Place | Houd een blok vast en kijk in de lucht; gebruik de gebruikknop. Bereik en interval instelbaar. | Normaal bereik en echte blokvoorraad; server kan de plaatsing weigeren. |
+| 26.2 | jar met `mc26.2` in de naam | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
+| 26.3 | jar met `mc26.3` in de naam | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
 
-Survival wordt ondersteund; de automatisering wijzigt geen Creative- of Spectator-spelgedrag. De server blijft beslissen over beweging, honger, schade, itemgebruik en plaatsing. Geen clientmod kan voor elke server beloven dat alle negen functies zonder OP werken. Als de standaard flightkick op de server van je maat actief is, kan de beheerder `allow-flight=true` instellen; dat geeft spelers geen OP of Creative-vliegrechten. [Paper server properties](https://docs.papermc.io/paper/reference/server-properties/#allow-flight). [Uitleg over server Anti-Xray](https://docs.papermc.io/paper/anti-xray/).
+Download de **normale jar**, niet de `-sources.jar`. Zet alleen de passende versie in je mods-map. Verwijder Meteor en oudere Timon-jars uit hetzelfde profiel. Uitgebreide stappen staan in [INSTALLEREN.md](docs/INSTALLEREN.md).
+
+**Rechter Shift** opent het menu. Links klikken schakelt een module om, rechts klikken opent de instellingen. **F8** zet alles uit. Vensters, kleuren, lettertype, schaal, zoeken, favorieten, profielen en de sneltoetseditor komen uit Meteor.
+
+## Modules en opties
+
+| Module | Beschikbare instellingen |
+|---|---|
+| Flight | Abilities/Velocity, snelheid, verticale snelheid, No Sneak, anti-kick None/Normal/Packet, interval en duur. |
+| Elytra Fly | Vanilla/Packet/Pitch40/Bounce, horizontale/verticale snelheid, automatisch opstijgen, versnelling, auto-hover, water-/chunk-/botsingscontroles, pitch/yaw, elytra wisselen, vuurwerk aanvullen en autopilot. |
+| Fast Use | All/Some, itemlijst, blokkenfilter en cooldown in ticks. |
+| Auto Clicker | Links en rechts afzonderlijk Disabled/Hold/Press, afzonderlijke vertragingen en klikken in schermen. |
+| Xray | **Whitelist of blacklist**, aparte bewaarde bloklijsten, opacity 0–255, vloeistofkeuze en Exposed Only. |
+| Auto Eat | Voedselblacklist, volledige inventaris doorzoeken, voedselprioriteit, gezondheid-/hongerdrempels en combinatiemodi. De oorspronkelijke pauzeopties zijn behouden. |
+| Anti Hunger | Sprintpakket- en on-ground-opties afzonderlijk instelbaar. |
+| No Fall | Packet/Place/AirPlace, keuze plaatsingsitem, plaatsingsmoment, centreren, Anti Bounce en pauzeren met een mace. |
+| Air Place | Normaal/aangepast bereik, plaatsingsvoorbeeld, Shape Mode en kleuren voor vlakken en lijnen. |
+
+De modulecode en de bijbehorende instellingen komen uit de vastgelegde Meteor-versies; de extra Xray-listmodus is voor Timon toegevoegd. Dit is geen belofte van identiek gedrag aan iedere toekomstige Meteor-versie. Opties voor optionele externe mods doen alleen iets als die mods aanwezig zijn.
+
+Bij **Xray → List Mode → Whitelist** blijven geselecteerde blokken zichtbaar. Bij **Blacklist** worden juist de geselecteerde blokken transparant. De schuif **Opacity** bepaalt hoeveel je nog ziet van de overige/uitgesloten blokken. De blokselector ondersteunt zoeken op naam en blok-ID.
+
+![Xray-instellingen](docs/images/xray-settings.png)
+
+## Survival
+
+De mod gebruikt geen OP-commando's en vraagt geen serverpermissies aan. Je hebt wel echte items nodig voor eten, elytra-vlucht en blokplaatsing. De server kan beweging, schade, honger en plaatsing controleren; vooral Flight, No Fall, Anti Hunger en Air Place blijven serverafhankelijk. Server Anti-Xray kan ertsen verbergen die de client niet ontvangt. Fast Use verkort geen door de server bepaalde eetduur of cooldowns.
+
+De automatische speltest gebruikt een tijdelijke vanilla-survivalwereld. Hij controleert de interface, modulelijst, instellingen bewaren, Xray-rendering en daadwerkelijke beweging/plaatsing/eten/valschade. Extra renderers en alle combinaties van instellingen zijn niet volledig getest. Zie [testresultaten](verification/RESULTATEN.md).
+
+## Iedere build op GitHub
+
+- Een push naar **main** bouwt beide Minecraft-versies en draait de clienttests. Bij succes verschijnt een eigen **ontwikkelrelease** `build-<nummer>` met beide jars, passende sources-jars, volledige broncode, uitleg en SHA-256-controlesommen.
+- Een tag **`v2.0.0`** (of een volgend versienummer) publiceert een gewone release. De tag moet overeenkomen met `mod_version` in `gradle.properties`.
+- Pull requests worden gebouwd en getest; hun resultaten staan bij **Actions → Artifacts**. Mislukte builds worden niet als downloadrelease gepubliceerd.
+- Jars en testresultaten zijn ook Actions-artifacts (respectievelijk 90 en 30 dagen). Gepubliceerde Releases blijven beschikbaar totdat je ze zelf verwijdert. Een lokale build wordt pas gepubliceerd wanneer de bijbehorende broncode naar GitHub wordt gepusht.
+
+Je kunt de workflow ook starten via **Actions → Build and publish client → Run workflow**. Er is geen persoonlijke token als repository-secret nodig; publiceren gebruikt GitHub's tijdelijke `GITHUB_TOKEN`.
 
 ## Zelf bouwen
 
-Vereist JDK 25. De meegeleverde Gradle-wrapper downloadt Gradle 9.6.0. Dit project gebruikt Fabric Loom 1.17.21, Loader 0.19.5 en Fabric API 0.161.0.
+Installeer **JDK 25** en stel `JAVA_HOME` daarop in. Gradle 9.6.0 wordt met een vastgelegde checksum door de wrapper opgehaald.
 
 ```powershell
+# Windows: beide versies
 .\build-all.ps1
-# Of één versie, met JAVA_HOME ingesteld op een JDK 25:
+# Inclusief echte Minecraft-clienttests
+.\build-all.ps1 -GameTests
+# Eén versie
 .\gradlew.bat -Pminecraft_version=26.3 collectRelease
 ```
 
-De kant-en-klare mod-jars verschijnen in `dist`. Broncode-jars en testrapporten staan apart onder `build/26.2` en `build/26.3`. Installeer geen `-sources.jar`.
-
-```powershell
-# Tests in echte Minecraft-clients met tijdelijke testwerelden:
-.\build-all.ps1 -GameTests
+```sh
+# Linux/macOS: één versie
+./gradlew -Pminecraft_version=26.2 collectRelease
+# Linux zonder beeldscherm, met Xvfb en Mesa geïnstalleerd
+xvfb-run -a ./gradlew -Pminecraft_version=26.3 runClientGameTest
 ```
 
-De testmod onder `src/gametest` wordt niet in de uitgeleverde jar opgenomen. Bouwcache, ontwikkelruntime en referentiebestanden zijn lokale ontwikkelbestanden en horen niet in je mods-map. De broncode staat onder MIT; Minecraft en Fabric behouden hun eigen licenties.
+Jars verschijnen in `dist/`. Tests gebruiken `build/run/clientGameTest`, geen bestaande Minecraft-wereld of launcherprofiel.
 
-## Controle
+## Projectstructuur
 
-De builds en tests zijn uitgevoerd op Java 25 met Fabric API 0.161.0. De speltest start een echte Minecraft-client en een tijdelijke survivalwereld en controleert het laden van de mixins, menu en instellingen, modulewissels, Auto Eat en het terugzetten van de hotbar, Flight omhoog/zweven, een door de server bevestigde Air Place, Xray met een verborgen diamond ore, No Fall na een val van 18 blokken en Elytra Fly met een echte elytra. Xray is ook op screenshots visueel gecontroleerd.
+- `src/main`: gemeenschappelijke Meteor-bron met Timon-aanpassingen.
+- `src/mc26.3`: alleen afwijkende bestanden voor 26.3; deze vervangen hun 26.2-equivalent tijdens bouwen.
+- `src/gametest`: integratietest en afgeschermde testhulpmiddelen; deze komen **niet** in de mod-jar.
+- `gradle/`, `gradlew`, `gradlew.bat`: de Gradle-wrapper.
+- `.github/workflows/build.yml`: bouwen, testen en releases publiceren.
+- `docs/`, `CHANGELOG.md`, `NOTICE.md`, `LICENSE`, `licenses/`: uitleg, wijzigingen en licenties.
 
-De vier overige JUnit-tests controleren configuratieherstel, ongeldige waarden, alle kliktempo's en stoppen/hervatten zonder extra klikstoot. Autoclicker, Fast Use en Anti Hunger hebben geen afzonderlijke volledige gedragstest tegen een externe multiplayer-server. De server van je maat, anticheat en andere mods zijn niet getest. Het volledige testverslag staat in `verification/RESULTATEN.md`.
+Intern blijven ondersteunende Meteor-klassen aanwezig om gedeelde rendering- en bewegingshooks intact te houden. Alleen de negen genoemde modules zijn zichtbaar, worden opgeslagen en kunnen geactiveerd worden. Configuratie staat apart in de map `timon-client` van je Minecraft-profiel. De eerdere eigen implementatie blijft op tag **v1.0.0** beschikbaar.

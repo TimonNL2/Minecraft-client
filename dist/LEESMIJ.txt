@@ -1,18 +1,27 @@
-TIMON CLIENT 1.0.0
+TIMON CLIENT 2.0.0
 
-Kies precies EEN jar voor de Minecraft Java-versie van jouw profiel:
-  26.2: timon-client-1.0.0+mc26.2.jar
-  26.3: timon-client-1.0.0+mc26.3.jar
+Kies precies EEN normale jar voor jouw Minecraft Java-profiel:
+  26.2: timon-client-2.0.0-mc26.2.jar
+  26.3: timon-client-2.0.0-mc26.3.jar
 
-Zet deze in de mods-map van een Fabric-profiel (Loader 0.19.5+ / Java 25).
-Voeg Fabric API 0.161.0 voor dezelfde Minecraft-versie toe.
-Gebruik deze eerste versie zonder Meteor, Sodium of Iris.
-De volledige installatiehandleiding staat in README.md in de projectmap.
+Installeer Fabric Loader 0.19.5+ met Java 25.
+Plaats de jar en Fabric API 0.161.0 voor dezelfde Minecraft-versie in mods.
+Verwijder Meteor en eerdere Timon-jars uit hetzelfde profiel.
+Bestanden met -sources.jar bevatten broncode en horen niet in mods.
 
-RECHTER SHIFT: menu openen
+RECHTER SHIFT: Meteor-menu openen/sluiten
+LINKSKLIK op module: aan/uit
+RECHTSKLIK op module: uitgebreide instellingen
 F8: alle modules uit
-ESCAPE: menu sluiten
 
-Alles begint uit. Je instellingen worden opgeslagen, actieve modules niet.
-Modules worden ook uitgezet bij disconnect en overlijden.
-Geen OP nodig; serverinstellingen en controles blijven bepalend.
+Xray: kies List Mode (Whitelist/Blacklist), pas de bloklijst aan en kies
+Opacity van 0 (onzichtbaar) tot 255 (ondoorzichtig). Vloeistoffen en
+Exposed Only zijn afzonderlijk instelbaar.
+
+Instellingen en moduletoestanden worden zoals in Meteor opgeslagen in de
+map timon-client van het Minecraft-profiel. Controleer ze bij het inloggen.
+Geen OP nodig om de client te gebruiken; servercontroles blijven bepalend.
+
+Downloads: https://github.com/TimonNL2/Minecraft-client/releases
+Handleiding: https://github.com/TimonNL2/Minecraft-client/blob/main/docs/INSTALLEREN.md
+Broncode en GPL-3.0-credits: https://github.com/TimonNL2/Minecraft-client

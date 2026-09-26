@@ -1,0 +1,6 @@
+{
+  "key.meteor-client.open-gui": "Open GUI",
+  "key.meteor-client.open-commands": "Open Commands",
+  "key.category.meteor-client.meteor-client": "Timon Client",
+  "key.timon-client.disable-all": "Disable all modules"
+}
