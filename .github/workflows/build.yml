@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        minecraft: ['26.2', '26.3']
+        minecraft: ['26.3']
         renderer: ['vanilla', 'sodium']
     steps:
       - name: Checkout
@@ -77,7 +77,7 @@ jobs:
           retention-days: 30
 
   publish:
-    name: Publish both versions
+    name: Publish Minecraft 26.3
     needs: build
     if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-24.04
@@ -113,18 +113,18 @@ jobs:
           set -euo pipefail
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             tag="$GITHUB_REF_NAME"
-            title="Vesper Client $tag — Minecraft 26.2 and 26.3"
+            title="Vesper Client $tag — Minecraft 26.3"
             release_flags=(--latest)
           else
             tag="build-$GITHUB_RUN_NUMBER"
-            title="Development build $GITHUB_RUN_NUMBER — Minecraft 26.2 and 26.3"
+            title="Development build $GITHUB_RUN_NUMBER — Minecraft 26.3"
             release_flags=(--prerelease --latest=false)
           fi
           {
-            printf 'Two separate Fabric client mods: choose the jar matching your Minecraft version.\n\n'
+            printf 'Fabric client mod for Minecraft 26.3. Earlier Minecraft 26.2 downloads remain available in previous releases.\n\n'
             printf 'Requires Java 25, Fabric Loader 0.19.5+ and Fabric API 0.161.0 for the same Minecraft version.\n\n'
             printf '**Installation:** download the normal jar; files ending in `-sources` contain source code. Remove Meteor and older Timon/Vesper jars from that profile. Right Shift opens the menu; F8 disables every module.\n\n'
-            printf 'Both versions passed automated survival client tests with the vanilla renderer and Sodium. Server checks and anticheat may still reject client actions.\n\n'
+            printf 'Minecraft 26.3 passed automated survival client tests with the vanilla renderer and Sodium. Server checks and anticheat may still reject client actions.\n\n'
             printf 'Source commit: `%s`. [Changelog](https://github.com/%s/blob/%s/CHANGELOG.md) · [Installation guide](https://github.com/%s/blob/%s/docs/INSTALLATION.md).\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_SHA"
           } > release-notes.md
           if gh release view "$tag" >/dev/null 2>&1; then

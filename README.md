@@ -17,9 +17,11 @@ Vesper is a modified [Meteor Client](https://github.com/MeteorDevelopment/meteor
 
 ## Choose your download
 
+New releases target **Minecraft 26.3 only**. For Minecraft 26.2, use the unchanged [2.0.1 release](https://github.com/TimonNL2/Minecraft-client/releases/tag/v2.0.1).
+
 | Minecraft | Download | Requirements |
 |---|---|---|
-| 26.2 | `vesper-client-2.0.2-mc26.2.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
+| 26.2 | `vesper-client-2.0.1-mc26.2.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
 | 26.3 | `vesper-client-2.0.2-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
 
 Download the **normal jar**, not `-sources.jar`. Use only the version matching your Minecraft profile. Remove older Timon/Vesper jars and the regular Meteor jar. Follow the [installation guide](docs/INSTALLATION.md).
@@ -56,7 +58,7 @@ The client uses no OP commands and requires no server permissions. Eating, elytr
 
 ## Every build on GitHub
 
-- A push to **main** builds both Minecraft versions and runs client tests with **vanilla and Sodium**. After all checks pass, a separate **development release** `build-<number>` includes both jars, matching source jars, complete buildable source, instructions and SHA-256 checksums.
+- A push to **main** builds Minecraft 26.3 and runs client tests with **vanilla and Sodium**. After all checks pass, a separate **development release** `build-<number>` includes the Minecraft 26.3 jar, matching source jars, complete buildable source, instructions and SHA-256 checksums.
 - A **`v2.0.1`** tag, or a later version tag, publishes a regular release. It must match `mod_version` in `gradle.properties`.
 - Pull requests are built and tested; downloads are under **Actions → Artifacts**. Failed builds are not published as releases.
 - Jar artifacts are retained for 90 days and test artifacts for 30 days. Published releases remain available until removed. Local builds are published after their source is pushed to GitHub.
@@ -68,7 +70,7 @@ Manual builds: **Actions → Build and publish client → Run workflow**. Publis
 Install **JDK 25** and set `JAVA_HOME`. The wrapper downloads Gradle 9.6.0 and verifies its pinned checksum.
 
 ```powershell
-# Windows: both versions
+# Windows: Minecraft 26.3
 .\build-all.ps1
 # Include client tests with vanilla and Sodium
 .\build-all.ps1 -GameTests
@@ -78,7 +80,7 @@ Install **JDK 25** and set `JAVA_HOME`. The wrapper downloads Gradle 9.6.0 and v
 
 ```sh
 # Linux/macOS
-./gradlew -Pminecraft_version=26.2 collectRelease
+./gradlew -Pminecraft_version=26.3 collectRelease
 # Linux without a display, with Xvfb and Mesa installed
 xvfb-run -a ./gradlew -Pminecraft_version=26.3 -Ptest_renderer=sodium runClientGameTest
 ```

@@ -5,7 +5,7 @@ try {
     $localJdk = Join-Path $PSScriptRoot '.tools/jdk25/jdk-25.0.4.1+1'
     if (Test-Path -LiteralPath (Join-Path $localJdk 'bin/java.exe')) { $env:JAVA_HOME = $localJdk }
     $env:GRADLE_USER_HOME = Join-Path $PSScriptRoot '.gradle-user-home'
-    foreach ($mcVersion in @('26.2', '26.3')) {
+    foreach ($mcVersion in @('26.3')) {
         $renderers = if ($GameTests) { @('vanilla', 'sodium') } else { @('vanilla') }
         foreach ($renderer in $renderers) {
             $buildTasks = if ($GameTests) { @('runClientGameTest', 'collectRelease') } else { @('collectRelease') }

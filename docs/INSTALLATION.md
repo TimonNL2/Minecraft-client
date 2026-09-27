@@ -1,10 +1,12 @@
 # Install Vesper Client
 
+New releases are for Minecraft 26.3 only. Minecraft 26.2 users can still download the unchanged jar from [release 2.0.1](https://github.com/TimonNL2/Minecraft-client/releases/tag/v2.0.1).
+
 Download from [GitHub Releases](https://github.com/TimonNL2/Minecraft-client/releases). Choose the normal jar matching your **Minecraft Java** version. Files ending in `-sources.jar` contain source code and must not go in your mods folder.
 
 | Minecraft | Normal release jar | Loader | Additional mod | Java |
 |---|---|---|---|---|
-| 26.2 | `vesper-client-2.0.2-mc26.2.jar` | Fabric Loader 0.19.5+ | Fabric API 0.161.0+26.2 | 25 |
+| 26.2 | `vesper-client-2.0.1-mc26.2.jar` | Fabric Loader 0.19.5+ | Fabric API 0.161.0+26.2 | 25 |
 | 26.3 | `vesper-client-2.0.2-mc26.3.jar` | Fabric Loader 0.19.5+ | Fabric API 0.161.0+26.3 | 25 |
 
 Development builds include `dev.<build number>` in their filenames. Later releases use their own version number.
