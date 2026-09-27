@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.3 — Mace Spoof for Minecraft 26.3
+
+- Added a standalone Mace Spoof module under Combat, adapted from Meteor's mace smash implementation. It only acts on attacks with a mace against living targets.
+- Configurable simulated fall height from 1.501 to 100 blocks (default 10), with clearance checks and No Fall compatibility. Effectiveness depends on the server; higher settings do not guarantee one-hit damage.
+- New builds and releases target Minecraft 26.3 only. All previous releases remain available, including Minecraft 26.2 in v2.0.1.
+
+
 ## 2.0.2 — Storage ESP and Auto Fish for Minecraft 26.3
 
 - Enabled Storage ESP and Auto Fish only on Minecraft 26.3, bringing that version to eleven available modules.

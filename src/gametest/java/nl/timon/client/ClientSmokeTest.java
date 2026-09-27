@@ -44,7 +44,8 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             check(names.equals(ClientFeatures.MODULES), "Unexpected feature set: " + names);
             boolean is263 = FabricLoader.getInstance().getModContainer("minecraft").orElseThrow()
                 .getMetadata().getVersion().getFriendlyString().equals("26.3");
-            check(Modules.get().getCount() == (is263 ? 11 : 9), "Incorrect module count");
+            check(Modules.get().getCount() == (is263 ? 12 : 9), "Incorrect module count");
+            check((Modules.get().get("mace-spoof") != null) == is263, "Mace Spoof version gating incorrect");
             check((Modules.get().get("storage-esp") != null) == is263, "Storage ESP version gating incorrect");
             check((Modules.get().get("auto-fish") != null) == is263, "Auto Fish version gating incorrect");
             check(Modules.get().searchTitles("wall").stream().allMatch(pair -> ClientFeatures.allows(pair.getFirst().name)), "Hidden module in search");
@@ -191,6 +192,50 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             world.getConnection().waitForServerboundPackets();
             world.getServer().runOnServer(server -> check(world.getConnection().getServerPlayer().getHealth() == 20, "No Fall failed on vanilla survival server"));
             context.runOnClient(mc -> Modules.get().disableAll());
+
+            if (context.computeOnClient(mc -> Modules.get().get("mace-spoof") != null)) {
+                world.getServer().runOnServer(server -> {
+                    var player = world.getConnection().getServerPlayer();
+                    player.getInventory().setItem(0, new ItemStack(Items.MACE));
+                    player.getInventory().setSelectedSlot(0);
+                    player.inventoryMenu.broadcastChanges();
+                });
+                world.getServer().runCommand("summon minecraft:cow 2 -60 0.5 {NoAI:1b,PersistenceRequired:1b,Tags:[\"mace-test\"]}");
+                world.getConnection().waitForClientboundPackets();
+                context.waitTicks(25);
+                var targetId = context.computeOnClient(mc -> {
+                    for (var entity : mc.level.entitiesForRendering()) {
+                        if (net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getPath().equals("cow")) return entity.getUUID();
+                    }
+                    throw new AssertionError("Mace test cow not loaded");
+                });
+                context.runOnClient(mc -> {
+                    check(mc.player.onGround(), "Mace test requires a standing player");
+                    check(mc.player.getMainHandItem().is(Items.MACE), "Mace was not equipped");
+                    mc.gameMode.attack(mc.player, mc.level.getEntity(targetId));
+                });
+                world.getConnection().waitForServerboundPackets();
+                world.getServer().runOnServer(server -> {
+                    var target = (net.minecraft.world.entity.LivingEntity) server.overworld().getEntity(targetId);
+                    check(target != null && target.isAlive() && target.getHealth() < 10, "Baseline mace attack must damage but not kill cow");
+                    target.setHealth(10);
+                });
+                context.waitTicks(25);
+                context.runOnClient(mc -> {
+                    var position = mc.player.position();
+                    enable("mace-spoof");
+                    enable("no-fall");
+                    mc.gameMode.attack(mc.player, mc.level.getEntity(targetId));
+                    check(mc.player.position().equals(position), "Mace Spoof moved local player");
+                });
+                world.getConnection().waitForServerboundPackets();
+                world.getServer().runOnServer(server -> {
+                    var target = server.overworld().getEntity(targetId);
+                    check(target == null || !target.isAlive(), "Mace Spoof did not one-hit the restored cow");
+                    check(Math.abs(world.getConnection().getServerPlayer().getY() + 60) < 0.1, "Mace Spoof did not restore server position");
+                });
+                context.runOnClient(mc -> Modules.get().disableAll());
+            }
 
             world.getServer().runOnServer(server -> {
                 var player = world.getConnection().getServerPlayer();

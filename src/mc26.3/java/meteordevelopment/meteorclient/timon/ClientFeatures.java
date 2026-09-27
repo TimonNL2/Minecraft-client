@@ -7,7 +7,7 @@ public final class ClientFeatures {
     public static final Set<String> MODULES = Set.of(
         "flight", "elytra-fly", "fast-use", "auto-clicker", "xray",
         "auto-eat", "anti-hunger", "no-fall", "air-place",
-        "storage-esp", "auto-fish"
+        "storage-esp", "auto-fish", "mace-spoof"
     );
 
     private ClientFeatures() {}

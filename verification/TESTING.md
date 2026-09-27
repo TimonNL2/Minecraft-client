@@ -1,4 +1,16 @@
-# Vesper Client 2.0.1 — verification
+# Vesper Client — verification
+
+## 2.0.3 — Minecraft 26.3 only
+
+Local vanilla/Indigo build and client tests passed on 27 September 2026. The release workflow also runs the same assertions with Sodium before publication.
+
+- Twelve public modules are available, including Storage ESP, Auto Fish and Mace Spoof; every module can be toggled.
+- With a standing Survival player and a normal mace, the baseline attack damages a cow but does not kill it. After restoring the cow to full health and waiting for attack cooldown, Mace Spoof at its default height of 10 kills it in one attack.
+- The test confirms unchanged local position and restored server position, with No Fall enabled during the spoofed attack.
+- 26.3's one-position-per-client-tick check is respected through explicit tick-end delimiters between simulated positions. The older three-position sequence disconnected the test client and is not used.
+- This verifies an integrated vanilla server. External server movement checks, anticheat, larger heights, armored targets and guaranteed one-hit kills are not covered.
+
+## 2.0.1 — historical verification
 
 Local verification: **27 September 2026**, Windows 11, Nvidia/OpenGL, JDK 25.0.4.1, Gradle 9.6.0, Fabric Loom 1.17.21, Loader 0.19.5 and Fabric API 0.161.0 for each target.
 

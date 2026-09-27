@@ -7,7 +7,7 @@ A standalone Fabric client for **Minecraft Java 26.2 and 26.3**, with Meteor's o
 
 **Flight · Elytra Fly · Fast Use · Auto Clicker · Xray · Auto Eat · Anti Hunger · No Fall · Air Place**
 
-**Minecraft 26.3 additionally includes Storage ESP and Auto Fish (11 modules total).** Minecraft 26.2 keeps the nine modules above. Storage ESP highlights storage blocks with configurable colors and rendering options. Auto Fish automatically casts and reels in a fishing rod, with configurable delays and rod protection.
+**Minecraft 26.3 additionally includes Storage ESP, Auto Fish and Mace Spoof (12 modules total).** Minecraft 26.2 keeps the nine modules above. Storage ESP highlights storage blocks; Auto Fish automatically casts and reels in a fishing rod. Mace Spoof simulates a fall when attacking with a mace, with configurable height and clearance checks. Its damage effect depends on the server.
 
 **[Download](https://github.com/TimonNL2/Minecraft-client/releases/latest)** · **[Installation](docs/INSTALLATION.md)** · **[All builds](https://github.com/TimonNL2/Minecraft-client/releases)** · **[Changelog](CHANGELOG.md)**
 
@@ -22,7 +22,7 @@ New releases target **Minecraft 26.3 only**. For Minecraft 26.2, use the unchang
 | Minecraft | Download | Requirements |
 |---|---|---|
 | 26.2 | `vesper-client-2.0.1-mc26.2.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
-| 26.3 | `vesper-client-2.0.2-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
+| 26.3 | `vesper-client-2.0.3-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
 
 Download the **normal jar**, not `-sources.jar`. Use only the version matching your Minecraft profile. Remove older Timon/Vesper jars and the regular Meteor jar. Follow the [installation guide](docs/INSTALLATION.md).
 
@@ -43,6 +43,9 @@ Vesper adds no client credit overlay, promotional splash text or client links to
 | Anti Hunger | Separate sprint-packet and on-ground settings. |
 | No Fall | Packet/Place/AirPlace, placement item, timing, centering, Anti Bounce and mace pause. |
 | Air Place | Normal/custom range, placement preview, Shape Mode and line/face colors. |
+| Storage ESP (26.3) | Storage block selection, shader/box rendering, colors, tracers and opened-container filtering. |
+| Auto Fish (26.3) | Automatic rod selection and casting, catch/cast delays, variance and rod protection. |
+| Mace Spoof (26.3) | Simulated fall height 1.501–100 blocks (default 10). Requires a mace and a clear path above you. Server-dependent. |
 
 The module code and settings come from the pinned Meteor versions in [NOTICE.md](NOTICE.md). Behavior may differ from future Meteor versions. Options referring to optional external mods require those mods.
 
