@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.gui.GuiThemes;
 import meteordevelopment.meteorclient.gui.screens.ModuleScreen;
 import meteordevelopment.meteorclient.gui.screens.ModulesScreen;
@@ -23,6 +24,8 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ServerboundClientTickEndPacket;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -106,6 +109,39 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             context.runOnClient(mc -> enable("flight"));
             context.getInput().holdKeyFor(options -> options.keyJump, 6);
             context.runOnClient(mc -> check(mc.player.getY() > initialY + 1, "Flight did not lift survival player"));
+            context.runOnClient(mc -> {
+                // EasyPlaceFix and Tweakeroo send additional rotation-only packets.
+                // Flight must not promote these to extra position updates in 26.3.
+                var connection = mc.getConnection().getConnection();
+                var look = new ServerboundMovePlayerPacket.Rot(90, 20, mc.player.onGround(), false);
+                var lookEvent = MeteorClient.EVENT_BUS.post(new PacketEvent.Send(look, connection));
+                check(!lookEvent.isCancelled() && lookEvent.packet == look && !look.hasPosition(),
+                    "Flight promoted a placement rotation to an extra position packet");
+                check(look.getYRot(0) == 90 && look.getXRot(0) == 20, "Flight changed placement rotation");
+                var status = new ServerboundMovePlayerPacket.StatusOnly(mc.player.onGround(), false);
+                var statusEvent = MeteorClient.EVENT_BUS.post(new PacketEvent.Send(status, connection));
+                check(!statusEvent.isCancelled() && statusEvent.packet == status && !status.hasPosition(),
+                    "Flight promoted a status-only packet to an extra position packet");
+
+                // Exercise the actual server rule with an isolated client-tick packet sequence:
+                // two placement rotations plus one ordinary position update must remain connected.
+                mc.getConnection().send(ServerboundClientTickEndPacket.INSTANCE);
+                mc.getConnection().send(look);
+                mc.getConnection().send(new ServerboundMovePlayerPacket.Rot(-90, -20, mc.player.onGround(), false));
+                mc.getConnection().send(status);
+                mc.getConnection().send(new ServerboundMovePlayerPacket.PosRot(
+                    mc.player.getX(), mc.player.getY(), mc.player.getZ(), mc.player.getYRot(), mc.player.getXRot(),
+                    mc.player.onGround(), mc.player.horizontalCollision));
+                mc.getConnection().send(ServerboundClientTickEndPacket.INSTANCE);
+            });
+            world.getConnection().waitForServerboundPackets();
+            context.waitTicks(3);
+            context.runOnClient(mc -> {
+                check(mc.getConnection() != null && mc.getConnection().getConnection().isConnected(),
+                    "Flight placement rotations disconnected the client");
+                check(Modules.get().get(Flight.class).isActive(), "Placement test unexpectedly disabled Flight");
+                MeteorClient.LOG.info("Flight placement rotation compatibility passed");
+            });
             context.runOnClient(mc -> {
                 Modules.get().disableAll();
                 check(!mc.player.getAbilities().mayfly, "Flight did not restore survival abilities");

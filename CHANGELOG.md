@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.5 — Flight placement compatibility for Minecraft 26.3
+
+- Fixed the "Invalid move player packet received" disconnect when Flight's Packet mode is used with EasyPlaceFix or Tweakeroo placement rotations.
+- Flight now preserves rotation-only and status-only packets. It adjusts existing position packets only, retaining its normal scheduled position updates and settings.
+- Added a client regression test covering placement rotations, status packets and the server's one-position-update-per-tick rule while Flight stays enabled.
+- The Flight compatibility fix is restricted to Minecraft 26.3.
+
 ## 2.0.3 — Mace Spoof for Minecraft 26.3
 
 - Added a standalone Mace Spoof module under Combat, adapted from Meteor's mace smash implementation. It only acts on attacks with a mace against living targets.

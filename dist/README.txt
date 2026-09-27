@@ -1,8 +1,8 @@
-VESPER CLIENT 2.0.3
+VESPER CLIENT 2.0.5
 
 Choose exactly ONE normal jar for your Minecraft Java profile:
   26.2 (previous release): vesper-client-2.0.1-mc26.2.jar
-  26.3: vesper-client-2.0.3-mc26.3.jar
+  26.3: vesper-client-2.0.5-mc26.3.jar
 
 Requires Java 25, Fabric Loader 0.19.5+ and Fabric API 0.161.0 for the same
 Minecraft version. Put both mods in that profile's mods folder.
@@ -18,6 +18,7 @@ Xray has separate whitelist/blacklist modes, saved block lists, opacity
 from 0 to 255, fluid selection and Exposed Only.
 
 2.0.1 fixes the Sodium 0.9.3-alpha.1 world-join crash on Minecraft 26.3.
+2.0.5 fixes Flight Packet mode disconnects with EasyPlaceFix/Tweakeroo rotations.
 Main-menu client branding and promotional splash text have been removed.
 Existing settings are preserved in the original timon-client directory.
 The client needs no OP commands; server checks still determine behavior.
