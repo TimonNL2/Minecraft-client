@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.2 — Storage ESP and Auto Fish for Minecraft 26.3
+
+- Enabled Storage ESP and Auto Fish only on Minecraft 26.3, bringing that version to eleven available modules.
+- Minecraft 26.2 retains its original nine modules and behavior.
+- Client smoke tests check the version-specific module count and availability, and toggle every available module.
+
+
 ## 2.0.1 — Vesper Client
 
 - Renamed the client and download files to **Vesper Client**. Existing 2.0.0 settings continue to load from their original directory.

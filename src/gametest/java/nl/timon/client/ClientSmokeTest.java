@@ -42,7 +42,11 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             Modules.get().disableAll();
             var names = Modules.get().getAll().stream().map(module -> module.name).collect(Collectors.toSet());
             check(names.equals(ClientFeatures.MODULES), "Unexpected feature set: " + names);
-            check(Modules.get().getCount() == 9, "Incorrect module count");
+            boolean is263 = FabricLoader.getInstance().getModContainer("minecraft").orElseThrow()
+                .getMetadata().getVersion().getFriendlyString().equals("26.3");
+            check(Modules.get().getCount() == (is263 ? 11 : 9), "Incorrect module count");
+            check((Modules.get().get("storage-esp") != null) == is263, "Storage ESP version gating incorrect");
+            check((Modules.get().get("auto-fish") != null) == is263, "Auto Fish version gating incorrect");
             check(Modules.get().searchTitles("wall").stream().allMatch(pair -> ClientFeatures.allows(pair.getFirst().name)), "Hidden module in search");
             Modules.get().get(WallHack.class).enable();
             check(!Modules.get().get(WallHack.class).isActive(), "Internal helper module became enabled");
@@ -81,7 +85,7 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             world.getConnection().waitForClientboundPackets();
             context.waitTicks(5);
             context.runOnClient(mc -> {
-                // All nine must activate/deactivate without broken dependencies.
+                // All available modules must activate/deactivate without broken dependencies.
                 for (var module : Modules.get().getAll()) {
                     module.enable();
                     check(module.isActive(), "Cannot enable " + module.name);

@@ -7,6 +7,8 @@ A standalone Fabric client for **Minecraft Java 26.2 and 26.3**, with Meteor's o
 
 **Flight · Elytra Fly · Fast Use · Auto Clicker · Xray · Auto Eat · Anti Hunger · No Fall · Air Place**
 
+**Minecraft 26.3 additionally includes Storage ESP and Auto Fish (11 modules total).** Minecraft 26.2 keeps the nine modules above. Storage ESP highlights storage blocks with configurable colors and rendering options. Auto Fish automatically casts and reels in a fishing rod, with configurable delays and rod protection.
+
 **[Download](https://github.com/TimonNL2/Minecraft-client/releases/latest)** · **[Installation](docs/INSTALLATION.md)** · **[All builds](https://github.com/TimonNL2/Minecraft-client/releases)** · **[Changelog](CHANGELOG.md)**
 
 Vesper is a modified [Meteor Client](https://github.com/MeteorDevelopment/meteor-client) distribution under GPL-3.0. Meteor is included: do not install a separate Meteor jar. See [attribution and source](NOTICE.md).
@@ -17,8 +19,8 @@ Vesper is a modified [Meteor Client](https://github.com/MeteorDevelopment/meteor
 
 | Minecraft | Download | Requirements |
 |---|---|---|
-| 26.2 | `vesper-client-2.0.1-mc26.2.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
-| 26.3 | `vesper-client-2.0.1-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
+| 26.2 | `vesper-client-2.0.2-mc26.2.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
+| 26.3 | `vesper-client-2.0.2-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
 
 Download the **normal jar**, not `-sources.jar`. Use only the version matching your Minecraft profile. Remove older Timon/Vesper jars and the regular Meteor jar. Follow the [installation guide](docs/INSTALLATION.md).
 

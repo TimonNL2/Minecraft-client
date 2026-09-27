@@ -4,8 +4,8 @@ Download from [GitHub Releases](https://github.com/TimonNL2/Minecraft-client/rel
 
 | Minecraft | Normal release jar | Loader | Additional mod | Java |
 |---|---|---|---|---|
-| 26.2 | `vesper-client-2.0.1-mc26.2.jar` | Fabric Loader 0.19.5+ | Fabric API 0.161.0+26.2 | 25 |
-| 26.3 | `vesper-client-2.0.1-mc26.3.jar` | Fabric Loader 0.19.5+ | Fabric API 0.161.0+26.3 | 25 |
+| 26.2 | `vesper-client-2.0.2-mc26.2.jar` | Fabric Loader 0.19.5+ | Fabric API 0.161.0+26.2 | 25 |
+| 26.3 | `vesper-client-2.0.2-mc26.3.jar` | Fabric Loader 0.19.5+ | Fabric API 0.161.0+26.3 | 25 |
 
 Development builds include `dev.<build number>` in their filenames. Later releases use their own version number.
 
@@ -17,7 +17,7 @@ Development builds include `dev.<build number>` in their filenames. Later releas
 
 ## Updating from Timon Client 2.0.0
 
-For 26.3, replace `timon-client-2.0.0-mc26.3.jar` with `vesper-client-2.0.1-mc26.3.jar`. Use the matching 26.2 jar for that version. Do not leave both enabled. Settings remain in the existing `timon-client` directory inside your Minecraft profile; no migration is required.
+For 26.3, replace `timon-client-2.0.0-mc26.3.jar` with `vesper-client-2.0.2-mc26.3.jar`. Use the matching 26.2 jar for that version. Do not leave both enabled. Settings remain in the existing `timon-client` directory inside your Minecraft profile; no migration is required.
 
 Version 2.0.1 fixes the Sodium 0.9.3-alpha.1 fluid-renderer crash when joining a world. You can enable that Sodium version again with the repaired Vesper jar. Other mods may introduce separate compatibility issues.
 

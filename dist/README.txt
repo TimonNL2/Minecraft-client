@@ -1,8 +1,8 @@
-VESPER CLIENT 2.0.1
+VESPER CLIENT 2.0.2
 
 Choose exactly ONE normal jar for your Minecraft Java profile:
-  26.2: vesper-client-2.0.1-mc26.2.jar
-  26.3: vesper-client-2.0.1-mc26.3.jar
+  26.2: vesper-client-2.0.2-mc26.2.jar
+  26.3: vesper-client-2.0.2-mc26.3.jar
 
 Requires Java 25, Fabric Loader 0.19.5+ and Fabric API 0.161.0 for the same
 Minecraft version. Put both mods in that profile's mods folder.
