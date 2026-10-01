@@ -3,6 +3,11 @@ package nl.timon.client;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import meteordevelopment.meteorclient.gui.widgets.WWidget;
+import meteordevelopment.meteorclient.gui.widgets.WItemWithLabel;
+import meteordevelopment.meteorclient.gui.widgets.containers.WContainer;
+import meteordevelopment.meteorclient.gui.widgets.input.WTextBox;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.gui.GuiThemes;
@@ -67,9 +72,35 @@ public final class ClientSmokeTest implements FabricClientGameTest {
         context.setScreen(() -> new ModuleScreen(GuiThemes.get(), Modules.get().get(Xray.class)));
         context.waitTicks(5);
         context.takeScreenshot("timon-xray-settings");
-        context.setScreen(() -> new BlockListSettingScreen(GuiThemes.get(), (BlockListSetting) Modules.get().get(Xray.class).blocks));
+        context.setScreen(SearchTestScreen::new);
         context.waitTicks(5);
         context.takeScreenshot("timon-block-selector");
+        context.runOnClient(mc -> check(org.lwjgl.sdl.SDLKeyboard.SDL_TextInputActive(mc.getWindow().handle()),
+            "Block search did not activate SDL text input"));
+        context.getInput().typeChars("diamond");
+        context.waitTicks(3);
+        context.runOnClient(mc -> {
+            var screen = (SearchTestScreen) mc.gui.screen();
+            check(screen.search().get().equals("diamond"), "Block search did not receive typed text");
+            check(screen.itemCount() > 0 && screen.itemCount() < 20, "Block search did not filter diamond results");
+        });
+        context.takeScreenshot("timon-xray-search-diamond");
+        context.getInput().typeChars("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+        context.waitTicks(2);
+        context.runOnClient(mc -> check(((SearchTestScreen) mc.gui.screen()).itemCount() == 0, "Unmatched search showed blocks"));
+        int searchLength = context.computeOnClient(mc -> ((SearchTestScreen) mc.gui.screen()).search().get().length());
+        for (int i = 0; i < searchLength; i++) {
+            context.getInput().pressKey(com.mojang.blaze3d.platform.InputConstants.KEY_BACKSPACE);
+        }
+        context.waitTicks(2);
+        context.runOnClient(mc -> {
+            var screen = (SearchTestScreen) mc.gui.screen();
+            check(screen.search().get().isEmpty() && screen.itemCount() > 100, "Clearing search did not restore blocks: text=" + screen.search().get() + ", items=" + screen.itemCount());
+            screen.search().setFocused(false);
+            check(!org.lwjgl.sdl.SDLKeyboard.SDL_TextInputActive(mc.getWindow().handle()), "Unfocused search kept SDL text input active");
+            screen.search().setFocused(true);
+            check(org.lwjgl.sdl.SDLKeyboard.SDL_TextInputActive(mc.getWindow().handle()), "Refocused search did not reactivate text input");
+        });
         context.setScreen(TitleScreen::new);
 
         try (var world = context.worldBuilder().setUseConsistentSettings(true).create()) {
@@ -305,5 +336,27 @@ public final class ClientSmokeTest implements FabricClientGameTest {
     private static void enable(String name) { Modules.get().get(name).enable(); }
     private static void check(boolean condition, String message) {
         if (!condition) throw new AssertionError(message);
+    }
+    private static final class SearchTestScreen extends BlockListSettingScreen {
+        SearchTestScreen() {
+            super(GuiThemes.get(), (BlockListSetting) Modules.get().get(Xray.class).blocks);
+        }
+
+        private Stream<WWidget> widgets(
+            WWidget widget) {
+            var children = widget instanceof WContainer container
+                ? container.cells.stream().flatMap(cell -> widgets(cell.widget()))
+                : Stream.<WWidget>empty();
+            return Stream.concat(Stream.of(widget), children);
+        }
+
+        WTextBox search() {
+            return widgets(window).filter(widget -> widget instanceof WTextBox)
+                .map(widget -> (WTextBox) widget).findFirst().orElseThrow();
+        }
+
+        long itemCount() {
+            return widgets(window).filter(widget -> widget instanceof WItemWithLabel).count();
+        }
     }
 }

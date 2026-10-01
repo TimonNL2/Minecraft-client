@@ -14,6 +14,7 @@ import meteordevelopment.meteorclient.gui.utils.CharFilter;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import meteordevelopment.meteorclient.gui.widgets.containers.WContainer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -26,7 +27,7 @@ import java.util.List;
 import static com.mojang.blaze3d.platform.InputConstants.*;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
-public abstract class WTextBox extends WWidget {
+public abstract class WTextBox extends WWidget implements GuiEventListener {
     private static final Renderer DEFAULT_RENDERER = (renderer, x, y, text, color) -> renderer.text(text, x, y, color, false);
 
     public Runnable action;
@@ -712,6 +713,7 @@ public abstract class WTextBox extends WWidget {
     public void setFocused(boolean focused) {
         if (this.focused && !focused && actionOnUnfocused != null) actionOnUnfocused.run();
 
+        boolean focusChanged = focused != this.focused;
         boolean wasJustFocused = focused && !this.focused;
 
         this.focused = focused;
@@ -719,6 +721,9 @@ public abstract class WTextBox extends WWidget {
         resetSelection();
 
         if (wasJustFocused) onCursorChanged();
+
+        // Minecraft 26.3 only delivers SDL text events while text input is active.
+        if (focusChanged) mc.onTextInputFocusChange(this, focused);
     }
 
     public void setCursorMax() {

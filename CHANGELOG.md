@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.6 — Xray search input for Minecraft 26.3
+
+- Fixed text input in the Xray block selector by registering text-box focus with Minecraft 26.3's SDL text input manager.
+- The same fix restores typing in other Vesper text fields on 26.3. Earlier releases and Minecraft 26.2 remain unchanged.
+
 ## 2.0.5 — Flight placement compatibility for Minecraft 26.3
 
 - Fixed the "Invalid move player packet received" disconnect when Flight's Packet mode is used with EasyPlaceFix or Tweakeroo placement rotations.
