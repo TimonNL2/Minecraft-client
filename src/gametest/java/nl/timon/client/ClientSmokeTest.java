@@ -194,6 +194,8 @@ public final class ClientSmokeTest implements FabricClientGameTest {
 
             world.getServer().runCommand("fill -2 -60 3 2 -57 7 minecraft:stone");
             world.getServer().runCommand("setblock 0 -59 5 minecraft:diamond_ore");
+            world.getServer().runCommand("setblock -1 -59 5 minecraft:spawner");
+            world.getServer().runCommand("setblock 12 -59 5 minecraft:spawner");
             // Enclosed water and lava exercise Sodium's fluid occlusion hooks,
             // including the path that previously crashed as soon as a world loaded.
             world.getServer().runCommand("fill 3 -60 3 5 -57 7 minecraft:stone");
@@ -222,6 +224,56 @@ public final class ClientSmokeTest implements FabricClientGameTest {
             world.getConnection().waitForChunksRender();
             context.waitTicks(5);
             context.takeScreenshot("timon-xray-partial-opacity");
+            BlockPos spawner = new BlockPos(-1, -59, 5);
+            BlockPos distantSpawner = new BlockPos(12, -59, 5);
+            BlockPos ore = new BlockPos(0, -59, 5);
+            context.runOnClient(mc -> {
+                Xray xray = Modules.get().get(Xray.class);
+                check(!xray.highlightWhitelist.get() && !xray.isHighlighted(spawner), "Highlights should be opt-in");
+                xray.blocks.set(List.of(Blocks.SPAWNER, Blocks.DIAMOND_ORE));
+                xray.opacity.set(255);
+                xray.highlightColor.set(new meteordevelopment.meteorclient.utils.render.color.SettingColor(255, 30, 210, 255));
+                xray.highlightWhitelist.set(true);
+            });
+            context.waitFor(mc -> Modules.get().get(Xray.class).isHighlighted(spawner)
+                && Modules.get().get(Xray.class).isHighlighted(ore), 200);
+            context.runOnClient(mc -> check(!Modules.get().get(Xray.class).isHighlighted(new BlockPos(1, -59, 5)),
+                "Highlight included non-whitelisted stone"));
+            context.runOnClient(mc -> {
+                Xray xray = Modules.get().get(Xray.class);
+                xray.settings.get("exposed-only", Boolean.class).set(true);
+                check(!xray.isHighlighted(spawner), "Highlight ignored Exposed Only for enclosed spawner");
+                xray.settings.get("exposed-only", Boolean.class).set(false);
+            });
+            for (var shape : meteordevelopment.meteorclient.renderer.ShapeMode.values()) {
+                context.runOnClient(mc -> Modules.get().get(Xray.class).highlightShape.set(shape));
+                context.waitTicks(3);
+                context.takeScreenshot("timon-xray-highlight-" + shape.name().toLowerCase(java.util.Locale.ROOT));
+            }
+            context.runOnClient(mc -> {
+                Xray xray = Modules.get().get(Xray.class);
+                xray.highlightRange.set(8);
+                check(!xray.isHighlighted(distantSpawner), "Highlight ignored range");
+                xray.blocks.set(List.of(Blocks.SPAWNER));
+                check(!xray.isHighlighted(ore), "Highlight ignored edited whitelist");
+            });
+            context.waitFor(mc -> Modules.get().get(Xray.class).isHighlighted(spawner), 200);
+            world.getServer().runCommand("setblock -1 -59 5 minecraft:stone");
+            world.getConnection().waitForClientboundPackets();
+            context.runOnClient(mc -> check(!Modules.get().get(Xray.class).isHighlighted(spawner), "Removed spawner remained highlighted"));
+            world.getServer().runCommand("setblock -1 -59 5 minecraft:spawner");
+            world.getConnection().waitForClientboundPackets();
+            context.waitFor(mc -> Modules.get().get(Xray.class).isHighlighted(spawner), 40);
+            context.runOnClient(mc -> {
+                Xray xray = Modules.get().get(Xray.class);
+                xray.highlightWhitelist.set(false);
+                check(!xray.isHighlighted(spawner), "Disabled highlight remained visible");
+                xray.highlightWhitelist.set(true);
+                xray.listMode.set(Xray.ListMode.Blacklist);
+                check(!xray.isHighlighted(spawner), "Whitelist highlights leaked into Blacklist mode");
+                xray.listMode.set(Xray.ListMode.Whitelist);
+                xray.opacity.set(80);
+            });
             for (Xray.FluidOpacity fluidMode : Xray.FluidOpacity.values()) {
                 context.runOnClient(mc -> {
                     Xray xray = Modules.get().get(Xray.class);
@@ -245,7 +297,11 @@ public final class ClientSmokeTest implements FabricClientGameTest {
                 xray.settings.reset();
                 xray.fromTag(saved);
                 check(xray.listMode.get() == Xray.ListMode.Blacklist && xray.blacklist.get().equals(List.of(Blocks.DIAMOND_ORE)) && xray.opacity.get() == 80, "Xray save/load lost settings");
+                check(xray.highlightWhitelist.get() && xray.highlightShape.get() == meteordevelopment.meteorclient.renderer.ShapeMode.Both
+                    && xray.highlightColor.get().r == 255 && xray.highlightColor.get().g == 30
+                    && xray.highlightColor.get().b == 210 && xray.highlightRange.get() == 8, "Xray save/load lost highlight settings");
                 Modules.get().disableAll();
+                check(!xray.isHighlighted(spawner), "Disabled Xray retained highlight");
                 xray.settings.reset();
                 enable("no-fall");
             });

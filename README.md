@@ -22,7 +22,7 @@ New releases target **Minecraft 26.3 only**. For Minecraft 26.2, use the unchang
 | Minecraft | Download | Requirements |
 |---|---|---|
 | 26.2 | `vesper-client-2.0.1-mc26.2.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.2 |
-| 26.3 | `vesper-client-2.0.6-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
+| 26.3 | `vesper-client-2.0.7-mc26.3.jar` | Java 25, Fabric Loader 0.19.5+, Fabric API 0.161.0+26.3 |
 
 Download the **normal jar**, not `-sources.jar`. Use only the version matching your Minecraft profile. Remove older Timon/Vesper jars and the regular Meteor jar. Follow the [installation guide](docs/INSTALLATION.md).
 
@@ -49,7 +49,7 @@ Vesper adds no client credit overlay, promotional splash text or client links to
 
 The module code and settings come from the pinned Meteor versions in [NOTICE.md](NOTICE.md). Behavior may differ from future Meteor versions. Options referring to optional external mods require those mods.
 
-Under **Xray → List Mode → Whitelist**, selected blocks remain visible. Under **Blacklist**, selected blocks receive the configured opacity. **Opacity** controls how visible hidden/excluded blocks remain. The block selector supports searching by name and ID.
+Under **Xray → List Mode → Whitelist**, selected blocks remain visible. Under **Blacklist**, selected blocks receive the configured opacity. **Opacity** controls how visible hidden/excluded blocks remain. The block selector supports searching by name and ID. Minecraft 26.3 also has **Whitelist Highlight**: optional outlines or colored boxes through walls, with a custom color, range and block limit. Add Spawner to the whitelist to highlight spawners.
 
 ![Xray settings](docs/images/xray-settings.png)
 

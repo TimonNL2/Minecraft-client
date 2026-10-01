@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.7 — Whitelist highlights for Minecraft 26.3
+
+- Added optional colored boxes through walls around Xray-whitelisted blocks, including spawners. Choose Lines, Sides or Both, and any color and opacity.
+- Configurable range and block limit keep dense whitelists manageable. Highlights follow whitelist edits, block updates and Xray's Exposed Only setting, and turn off in Blacklist mode.
+- Scans loaded chunks incrementally and skips block palettes without matching blocks. Minecraft 26.2 remains unchanged.
+
 ## 2.0.6 — Xray search input for Minecraft 26.3
 
 - Fixed text input in the Xray block selector by registering text-box focus with Minecraft 26.3's SDL text input manager.
